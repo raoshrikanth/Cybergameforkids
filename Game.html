@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cybersecurity Story Mode</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', sans-serif;
+      background-image:url('https://cdn3.vectorstock.com/i/1000x1000/88/12/cybersecurity-threat-cartoon-vector-23498812.jpg');
+      background-size: 55%;
+      background-repeat: no-repeat;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      color: #007acc;
+      margin-bottom: 20px;
+    }
+    .game-section, #warning {
+      display: none;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    #start-page {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 600px;
+      width: 100%;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button.action, button.next, .start-link {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background-color: #aec4ce;
+      color: rgb(39, 21, 204);
+      cursor: pointer;
+    }
+    .warning-text {
+      color: red;
+      font-weight: bold;
+    }
+    .octopus-guide {
+      position: fixed;
+      bottom: 30px;
+      right: 50px;
+      text-align: center;
+      animation: floaty 4s ease-in-out infinite;
+      z-index: 1000;
+    }
+    .octopus {
+      width: 250px;
+      height: auto;
+    }
+    .speech-bubble {
+      background: #fff;
+      border-radius: 12px;
+      padding: 10px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+      margin-top: 8px;
+      max-width: 200px;
+      font-size: 0.9rem;
+    }
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    #timerClock {
+      position: fixed;
+      top: 20px;
+      right: 30px;
+      background-color: #fff;
+      padding: 10px 15px;
+      border-radius: 12px;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+      font-family: monospace;
+      font-size: 1rem;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Cybersecurity Adventure</h1>
+
+  <div id="start-page">
+    <p>Welcome to your cybersecurity training adventure!</p>
+    <button class="start-link" onclick="showWarning()"><b><u>http://clickmetostart.in</u></b></button>
+  </div>
+
+  <div id="timerClock"></div>
+
+  <div id="warning">
+    <p class="warning-text">⚠️ Oii!! you clicked on an unknown link? It’s always not safe to click! 😉</p>
+    <button onclick="startStoryMode()">Continue</button>
+  </div>
+
+  <div class="octopus-guide">
+    <img src="https://media.istockphoto.com/id/850110398/vector/smiling-octopus.jpg?s=612x612&w=0&k=20&c=18hOGyXxGRvltdaZnp-9Ra5C7UQa6UHPbLa9bbITJ0c=" alt="Octopus Guide" class="octopus">
+    <div class="speech-bubble" id="octoSpeech">Enjoy Learning, matey! 🐙</div>
+  </div>
+
+  <!-- Game Sections -->
+  <div id="phishing" class="game-section">
+    <h2>1️⃣ Phishing Phobia</h2>
+    <p>Can you tell which emails are real and which are phishing attempts?</p>
+    <div id="email" class="email-box"></div>
+    <div class="buttons">
+      <button class="real" onclick="checkAnswer('real')">✅ Real</button>
+      <button class="phish" onclick="checkAnswer('phish')">🚨 Fraud</button>
+    </div>
+    <div id="feedback"></div>
+    <div id="score"></div>
+    <button class="next" onclick="nextStage('password')">Next</button>
+  </div>
+
+  <div id="password" class="game-section">
+    <h2>2️⃣ Password Power</h2>
+    <p>Enter a password to see how strong it is!</p>
+    <input type="text" id="passwordInput" placeholder="Try typing a password...">
+    <button class="action" onclick="checkPassword()">Check Strength</button>
+    <div id="result"></div>
+    <div class="tips">
+      <ul>
+        <li>Use at least 12 characters</li>
+        <li>Mix uppercase, lowercase, numbers, and symbols</li>
+        <li>Don't use common words or personal info</li>
+        <li>Use a passphrase for easier memory</li>
+      </ul>
+    </div>
+    <button class="next" onclick="nextStage('profile')">Next</button>
+  </div>
+
+  <div id="profile" class="game-section">
+    <h2>3️⃣ 📸 Private Profile</h2>
+    <p>Which of these should <strong>NOT</strong> be shared on a public profile?</p>
+    <form id="profileGame">
+      <label><input type="checkbox" value="birthday"> 🎂 Birthday</label><br>
+      <label><input type="checkbox" value="school"> 🏫 School name</label><br>
+      <label><input type="checkbox" value="pet"> 🐶 Pet’s name</label><br>
+      <label><input type="checkbox" value="favoriteColor"> 🎨 Favorite color</label><br>
+      <label><input type="checkbox" value="homeAddress"> 🏠 Home address</label><br>
+      <label><input type="checkbox" value="hobby"> 🏀 Hobby</label><br>
+    </form>
+    <button class="action" onclick="checkProfile()">Check Answers</button>
+    <div id="profileFeedback"></div>
+    <button class="next" onclick="nextStage('firewall')">Next</button>
+  </div>
+
+  <div id="firewall" class="game-section">
+    <h2>4️⃣ 🔥 Firewall Frenzy</h2>
+    <p>Choose which apps you should <strong>allow</strong> or <strong>block</strong> on your firewall:</p>
+    <div id="firewallGame">
+      <div>🟢 Zoom (Video conferencing)</div>
+      <button onclick="selectFirewall('Zoom', 'allow')">Allow</button>
+      <button onclick="selectFirewall('Zoom', 'block')">Block</button>
+
+      <div>🔴 PirateMovies.exe (Unknown app)</div>
+      <button onclick="selectFirewall('PirateMovies.exe', 'allow')">Allow</button>
+      <button onclick="selectFirewall('PirateMovies.exe', 'block')">Block</button>
+
+      <div>🟢 Google Chrome (Web Browser)</div>
+      <button onclick="selectFirewall('Chrome', 'allow')">Allow</button>
+      <button onclick="selectFirewall('Chrome', 'block')">Block</button>
+
+      <div>🔴 FreeBitcoinMiner.bat</div>
+      <button onclick="selectFirewall('Miner', 'allow')">Allow</button>
+      <button onclick="selectFirewall('Miner', 'block')">Block</button>
+    </div>
+    <div id="firewallFeedback"></div>
+    <button class="next" onclick="nextStage('friend')">Next</button>
+  </div>
+
+  <div id="friend" class="game-section">
+    <h2>5️⃣ Friend or Foe?</h2>
+    <p>Coming soon: A game to test your online trust radar!</p>
+    <button class="next" onclick="nextStage('thankyou')">Finish</button>
+  </div>
+
+  <div id="thankyou" class="game-section">
+    <h2>🎉 Thank You!</h2>
+    <p>You've completed your cybersecurity adventure! 🛡️</p>
+    <p>Remember to stay alert, stay private, and stay secure online. 💻🔐</p>
+    <p>🐙 The Octopus Guide salutes you!</p>
+  </div>
+
+  <script>
+    const sections = document.querySelectorAll('.game-section');
+    let current = 0;
+    let score = 0;
+
+    const emails = [
+      { text: "Your package has shipped! Track it here: https://tracking.upstoday.com", answer: "phish" },
+      { text: "Hey, it's Mom – can you call me when you're free?", answer: "real" },
+      { text: "We've detected suspicious activity on your account. Log in now: http://secure-banking-login.com", answer: "phish" },
+      { text: "Reminder: School starts at 9am tomorrow!", answer: "real" },
+      { text: "Congratulations! You've won a $500 gift card. Click to claim!", answer: "phish" },
+      { text: "Meeting rescheduled to 3PM. Let me know if that works.", answer: "real" },
+      { text: "Your password expires today. Click here to keep your account active: http://update-now-login.net", answer: "phish" },
+      { text: "Check out these fun photos from our trip!", answer: "real" },
+      { text: "Apple ID locked. Verify your account immediately: http://apple-login-secure.co", answer: "phish" },
+      { text: "Thanks for your help with the science project!", answer: "real" }
+    ];
+
+    function showWarning() {
+      document.getElementById('start-page').style.display = 'none';
+      document.getElementById('warning').style.display = 'block';
+    }
+
+    function startStoryMode() {
+      document.getElementById('warning').style.display = 'none';
+      document.getElementById('phishing').style.display = 'block';
+      showEmail();
+    }
+
+    function nextStage(nextId) {
+      sections.forEach(sec => sec.style.display = 'none');
+      document.getElementById(nextId).style.display = 'block';
+
+      switch (nextId) {
+        case 'password':
+          updateOctopusMessage("Let's test your password power! 🔐");
+          break;
+        case 'profile':
+          updateOctopusMessage("Keep that profile private, savvy? 🕵️‍♀️");
+          break;
+        case 'firewall':
+          updateOctopusMessage("Raise the firewall! 🔥");
+          break;
+        case 'friend':
+          updateOctopusMessage("Friend or foe? Trust no one easily. 🤔");
+          break;
+        case 'thankyou':
+          updateOctopusMessage("You're now a cybersecurity hero! 🦸‍♂️");
+          break;
+        default:
+          updateOctopusMessage("You're doing great, keep going! 🐙");
+      }
+    }
+
+    function showEmail() {
+      document.getElementById('email').textContent = emails[current].text;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('score').textContent = `Score: ${score} / ${emails.length}`;
+    }
+
+    function checkAnswer(choice) {
+      if (choice === emails[current].answer) {
+        document.getElementById('feedback').textContent = '✅ Correct!';
+        score++;
+      } else {
+        document.getElementById('feedback').textContent = '❌ Oops! That was ' + emails[current].answer.toUpperCase();
+      }
+      current++;
+      if (current < emails.length) {
+        setTimeout(showEmail, 1000);
+      } else {
+        document.getElementById('email').textContent = 'Game Over!';
+        document.getElementById('feedback').textContent = `Final Score: ${score} / ${emails.length}`;
+      }
+    }
+
+    function checkPassword() {
+      const pwd = document.getElementById('passwordInput').value;
+      const result = document.getElementById('result');
+      let strength = 0;
+      if (pwd.length >= 12) strength++;
+      if (/[A-Z]/.test(pwd)) strength++;
+      if (/[a-z]/.test(pwd)) strength++;
+      if (/[0-9]/.test(pwd)) strength++;
+      if (/[^A-Za-z0-9]/.test(pwd)) strength++;
+
+      if (pwd.length === 0) {
+        result.textContent = '';
+      } else if (strength <= 2) {
+        result.textContent = '❌ Weak Password';
+        result.style.color = '#cc0000';
+      } else if (strength === 3 || strength === 4) {
+        result.textContent = '⚠️ Moderate Password';
+        result.style.color = '#ff9900';
+      } else {
+        result.textContent = '✅ Strong Password!';
+        result.style.color = '#00aa00';
+      }
+    }
+
+    function updateOctopusMessage(message) {
+      document.getElementById('octoSpeech').textContent = message;
+    }
+
+    function checkProfile() {
+      const answers = Array.from(document.querySelectorAll('#profileGame input:checked')).map(cb => cb.value);
+      const sensitive = ['birthday', 'school', 'homeAddress', 'pet'];
+      const mistakes = answers.filter(ans => !sensitive.includes(ans));
+
+      if (mistakes.length > 0) {
+        document.getElementById('profileFeedback').textContent = "⚠️ Some info you selected is safe to share. Try again!";
+        document.getElementById('profileFeedback').style.color = "#cc0000";
+      } else {
+        document.getElementById('profileFeedback').textContent = "✅ Great! You picked all sensitive info correctly!";
+        document.getElementById('profileFeedback').style.color = "#00aa00";
+      }
+    }
+
+    let firewallAnswers = {
+      'Zoom': 'allow',
+      'PirateMovies.exe': 'block',
+      'Chrome': 'allow',
+      'Miner': 'block'
+    };
+    let userFirewallAnswers = {};
+
+    function selectFirewall(app, choice) {
+      userFirewallAnswers[app] = choice;
+      if (Object.keys(userFirewallAnswers).length === 4) {
+        let correct = 0;
+        for (let app in firewallAnswers) {
+          if (userFirewallAnswers[app] === firewallAnswers[app]) correct++;
+        }
+        const feedback = document.getElementById('firewallFeedback');
+        if (correct === 4) {
+          feedback.textContent = "✅ All selections correct! Your firewall is strong!";
+          feedback.style.color = "#00aa00";
+        } else {
+          feedback.textContent = `⚠️ You got ${correct}/4 correct. Try to identify risky apps!`;
+          feedback.style.color = "#cc0000";
+        }
+      }
+    }
+
+    function startTimer() {
+      const timerDisplay = document.getElementById("timerClock");
+      let seconds = 0;
+      setInterval(() => {
+        seconds++;
+        const mins = String(Math.floor(seconds / 60)).padStart(2, '0');
+        const secs = String(seconds % 60).padStart(2, '0');
+        timerDisplay.textContent = `⏱️ ${mins}:${secs}`;
+      }, 1000);
+    }
+
+    startTimer();
+  </script>
+</body>
+</html>
